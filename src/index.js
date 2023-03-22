@@ -4,20 +4,22 @@
  * @Date: 2023-03-17 14:22:41
  * @Description: react的demo
  * @LastEditors: 马燥
- * @LastEditTime: 2023-03-17 14:35:03
+ * @LastEditTime: 2023-03-22 14:27:12
  */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 class Square extends React.Component {
   render () {
-    return <button className='square'>{/* TODO */}</button>
+    return <button className='square'>
+      {this.props.value}
+    </button>
   }
 }
 
 class Board extends React.Component {
   renderSquare (i) {
-    return <Square />
+    return <Square value={i}/>
   }
 
   render () {
@@ -27,9 +29,9 @@ class Board extends React.Component {
       <div>
         <div className='status'>{status}</div>
         <div className='board-row'>
-          {this.renderSquare()}
-          {this.renderSquare()}
-          {this.renderSquare()}
+          {this.renderSquare(0)}
+          {this.renderSquare(1)}
+          {this.renderSquare(2)}
         </div>
         <div className='board-row'>
           {this.renderSquare(3)}
