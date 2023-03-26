@@ -4,11 +4,12 @@
  * @Date: 2023-03-17 14:22:41
  * @Description: react的demo
  * @LastEditors: 马燥
- * @LastEditTime: 2023-03-22 14:40:55
+ * @LastEditTime: 2023-03-22 16:15:36
  */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+// 格子
 class Square extends React.Component {
   constructor(props) {
     super(props)
@@ -27,10 +28,16 @@ class Square extends React.Component {
     );
   }
 }
-
+// 棋盘
 class Board extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      squares: Array(9).fill(null),
+    };
+  }
   renderSquare (i) {
-    return <Square value={i}/>
+    return <Square value={this.state.squares[i]}/>
   }
 
   render () {
