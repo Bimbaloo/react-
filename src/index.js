@@ -4,26 +4,20 @@
  * @Date: 2023-03-17 14:22:41
  * @Description: react的demo
  * @LastEditors: 马燥
- * @LastEditTime: 2023-03-22 16:15:36
+ * @LastEditTime: 2023-03-27 11:10:07
  */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 // 格子
 class Square extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      value: null,
-    };
-  }
   render () {
     return (
       <button
         className="square"
-        onClick={() => this.setState({value: 'X'})}
+        onClick={() => this.props.onClick()}
       >
-        {this.state.value}
+        {this.props.value}
       </button>
     );
   }
@@ -37,7 +31,17 @@ class Board extends React.Component {
     };
   }
   renderSquare (i) {
-    return <Square value={this.state.squares[i]}/>
+    return (
+      <Square
+        value={this.state.squares[i]}
+        onClick={() => this.handleClick(i)}
+      />
+    )
+  }
+  handleClick(i) {
+    const squares = this.state.squares.slice();
+    squares[i] = 'X';
+    this.setState({squares: squares});
   }
 
   render () {
