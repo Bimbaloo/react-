@@ -4,14 +4,13 @@
  * @Date: 2023-03-17 14:22:41
  * @Description: react的demo
  * @LastEditors: 马燥
- * @LastEditTime: 2023-03-27 19:43:54
+ * @LastEditTime: 2023-03-27 19:59:56
  */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 // 格子
 function Square(props) {
-  console.log(props)
   return (
     <button className="square" onClick={props.onClick}>
       {props.value}
@@ -59,11 +58,12 @@ class Game extends React.Component {
       history: [{
         squares: Array(9).fill(null),
       }],
+      stepNumber: 0,
       xIsNext: true,
     };
   }
   handleClick(i) {
-    const history = this.state.history;
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
     // 赢了或者重复点击
@@ -75,13 +75,31 @@ class Game extends React.Component {
       history: history.concat([{
         squares: squares,
       }]),
+      stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
+    });
+  }
+  jumpTo(step) {
+    this.setState({
+      stepNumber: step,
+      xIsNext: (step % 2) === 0,
     });
   }
   render () {
     const history = this.state.history;
-    const current = history[history.length - 1];
+    const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
+
+    const moves = history.map((step, move) => {
+      const desc = move ?
+        'Go to move #' + move :
+        'Go to game start';
+      return (
+        <li key={move}>
+          <button  onClick={() => this.jumpTo(move)}>{desc}</button>
+        </li>
+      );
+    });
     let status;
     if (winner) {
       status = 'Winner: ' + winner;
@@ -98,7 +116,7 @@ class Game extends React.Component {
         </div>
         <div className='game-info'>
           <div>{status}</div>
-          <ol>{/* TODO */}</ol>
+          <ol>{moves}</ol>
         </div>
       </div>
     )
