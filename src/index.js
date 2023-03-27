@@ -4,23 +4,18 @@
  * @Date: 2023-03-17 14:22:41
  * @Description: react的demo
  * @LastEditors: 马燥
- * @LastEditTime: 2023-03-27 11:10:07
+ * @LastEditTime: 2023-03-27 12:49:35
  */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 // 格子
-class Square extends React.Component {
-  render () {
-    return (
-      <button
-        className="square"
-        onClick={() => this.props.onClick()}
-      >
-        {this.props.value}
-      </button>
-    );
-  }
+function Square(props) {
+  return (
+    <button className="square" onClick={props.onClick}>
+      {props.value}
+    </button>
+  );
 }
 // 棋盘
 class Board extends React.Component {
@@ -28,6 +23,7 @@ class Board extends React.Component {
     super(props);
     this.state = {
       squares: Array(9).fill(null),
+      xIsNext: true
     };
   }
   renderSquare (i) {
@@ -40,12 +36,17 @@ class Board extends React.Component {
   }
   handleClick(i) {
     const squares = this.state.squares.slice();
-    squares[i] = 'X';
-    this.setState({squares: squares});
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
+    this.setState(
+      {
+        squares: squares,
+        xIsNext: !this.state.xIsNext
+      },
+    );
   }
 
   render () {
-    const status = 'Next player: X'
+    const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 
     return (
       <div>
